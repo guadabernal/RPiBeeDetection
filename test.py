@@ -2,7 +2,10 @@ import picamera
 import picamera.array
 import numpy as np
 import time
-from datetime import datetime
+
+import datetime
+import time
+
 import logging
 import shutil
 import os
