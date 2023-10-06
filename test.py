@@ -98,14 +98,14 @@ class DetectMotion(picamera.array.PiMotionAnalysis):
         self.prev_frame = frame
         
         # Threshold the difference (you may need to adjust the threshold value)
-        threshold_value = 150
+        threshold_value = 180
         frame_diff = (frame_diff > threshold_value).astype(np.uint8)
         
         # Sum the black pixels (value=0)
         black_pixel_count = np.sum(frame_diff == 0)
 
         # Set motion detected flag based on black pixel count threshold
-        black_pixel_threshold = 1000  # Adjust this threshold value as needed
+        black_pixel_threshold = 10000  # Adjust this threshold value as needed
         if black_pixel_count > black_pixel_threshold:
             self.motion_detected = True
             self.last_detection = time.time()
