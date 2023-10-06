@@ -97,7 +97,7 @@ while summed_time < time_total: #time.time() - start_time < time_total:
     if output.motion_detected:
 
         start_recording_time = time.time()
-        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         filename = os.path.join(folder_path, timestamp)
         # print(f"Motion detected - total time: {int(time.time() - start_time)} - current time: {filename} {int(time.time() - output.last_detection)}")
 
@@ -105,7 +105,7 @@ while summed_time < time_total: #time.time() - start_time < time_total:
         output.motion_detected = False
         while (time.time() - output.last_detection) < time_motion_record and (time.time() - start_recording_time) < time_file_length:
             if camera_timestamp:
-                camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+                camera.annotate_text = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
                 camera.wait_recording(.1)
             camera.wait_recording(.1)
         
