@@ -19,8 +19,6 @@ import logging
 import shutil
 import os
 import socket
-from datetime import date 
-from datetime import time 
 
 # -----------------------------------------------------------------------------------------------
 # General setings
