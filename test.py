@@ -65,7 +65,7 @@ class DetectMotion(picamera.array.PiMotionAnalysis):
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 print('starting: ')
-target_datetime = datetime.datetime(year=2023, month=10, day=6, hour=1, minute=47, second=30)
+target_datetime = datetime.datetime(year=2023, month=10, day=6, hour=13, minute=47, second=30)
 print(target_datetime)
 print(datetime.datetime.now())
 while datetime.datetime.now() < target_datetime:
