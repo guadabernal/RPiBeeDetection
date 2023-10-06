@@ -7,11 +7,7 @@ import logging
 import shutil
 import os
 
-total_disk, used_disk, free_disk = shutil.disk_usage('/home/pi/videos') # returns total, use, and free
-print(total_disk)
-print(used_disk)
-print(free_disk)
-exit()
+
 
 # -----------------------------------------------------------------------------------------------
 # General setings
@@ -73,6 +69,11 @@ camera.framerate = framerate
 
 print("Camera Initialized")
 
+total_disk, used_disk, free_disk = shutil.disk_usage('/home/pi/videos') # returns total, use, and free
+print(total_disk)
+print(used_disk)
+print(free_disk)
+
 print("Start recording...")
 output = DetectMotion(camera)
 camera.start_recording('/dev/null', format='h264', motion_output=output)
@@ -88,7 +89,7 @@ while summed_time < time_total: #time.time() - start_time < time_total:
         start_recording_time = time.time()
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         filename = os.path.join(folder_path, timestamp)
-        print(f"Motion detected - total time: {int(time.time() - start_time)} - current time: {filename} {int(time.time() - output.last_detection)}")
+        # print(f"Motion detected - total time: {int(time.time() - start_time)} - current time: {filename} {int(time.time() - output.last_detection)}")
 
         camera.split_recording(filename)
         output.motion_detected = False
@@ -105,9 +106,13 @@ while summed_time < time_total: #time.time() - start_time < time_total:
         camera.split_recording('/dev/null')
         # rename file with duration
         os.rename(filename, filename + f"_{dt:08d}.h264")
-        print(f"Recording File Time = {dt:08d}")
+        # print(f"Recording File Time = {dt:08d}")
 
         output.motion_detected = False
+
+        total_disk, used_disk, free_disk = shutil.disk_usage('/home/pi/videos') # returns total, use, and free
+        if free_disk < 5000000000:
+            break
 
 print("Stop Recording...")
 camera.stop_recording()
