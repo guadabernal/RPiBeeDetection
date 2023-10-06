@@ -7,12 +7,18 @@ import logging
 import shutil
 import os
 
+total_disk, used_disk, free_disk = shutil.disk_usage('home/pi/videos') # returns total, use, and free
+print(total_disk)
+print(used_disk)
+print(free_disk)
+exit()
+
 # -----------------------------------------------------------------------------------------------
 # General setings
 folder_path = '/home/pi/videos'
-time_total = 20
-time_motion_record = 2
-time_file_length = 30
+time_total = 4 * 60 * 60    # 4 hours
+time_motion_record = 10     # 10 seconds
+time_file_length = 10 * 60  # 10 minutes
 camera_cols = 1920
 camera_rows = 1080
 framerate = 30
@@ -72,9 +78,10 @@ output = DetectMotion(camera)
 camera.start_recording('/dev/null', format='h264', motion_output=output)
 
 start_time = time.time()
+summed_time = 0
 
 # run the program until time_total
-while time.time() - start_time < time_total:
+while summed_time < time_total: #time.time() - start_time < time_total:
     camera.wait_recording(0.1)
     if output.motion_detected:
 
@@ -93,6 +100,7 @@ while time.time() - start_time < time_total:
         
         # check duration
         dt = int(time.time() - start_recording_time)
+        summed_time += dt
         # finish previous recording
         camera.split_recording('/dev/null')
         # rename file with duration
@@ -100,7 +108,6 @@ while time.time() - start_time < time_total:
         print(f"Recording File Time = {dt:08d}")
 
         output.motion_detected = False
-
 
 print("Stop Recording...")
 camera.stop_recording()
