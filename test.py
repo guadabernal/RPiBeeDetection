@@ -26,8 +26,8 @@ framerate = 30
 camera_timestamp = False
 # -----------------------------------------------------------------------------------------------
 # Motion sensitivity
-motion_vectors_norm = 100    # mvecs norm
-motion_density = 100         # number of pixels with |mvecs| > motion_density
+motion_vectors_norm = 90    # mvecs norm
+motion_density = 90         # number of pixels with |mvecs| > motion_density
 motion_min_log_time = 1     # seconds
 # -----------------------------------------------------------------------------------------------
 
