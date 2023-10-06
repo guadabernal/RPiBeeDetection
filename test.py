@@ -62,7 +62,7 @@ logging.basicConfig(filename=os.path.join(folder_path,'motion.log'), level=loggi
 #                 print('Motion detected')
 #                 self.last_logged = self.last_detection  # Update the last logged time
 
-class DetectMotion(PiMotionAnalysis):
+class DetectMotion(picamera.array.PiMotionAnalysis):
     def __init__(self, camera):
         super(DetectMotion, self).__init__(camera)
         self.motion_detected = False
