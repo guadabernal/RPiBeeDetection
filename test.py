@@ -27,8 +27,8 @@ framerate = 30
 camera_timestamp = False
 # -----------------------------------------------------------------------------------------------
 # Motion sensitivity
-motion_vectors_norm = 98    # mvecs norm
-motion_density = 95         # number of pixels with |mvecs| > motion_density
+motion_vectors_norm = 80    # mvecs norm
+motion_density = 80         # number of pixels with |mvecs| > motion_density
 motion_min_log_time = 1     # seconds
 # -----------------------------------------------------------------------------------------------
 
@@ -39,93 +39,94 @@ if not os.path.exists(folder_path):
 logging.basicConfig(filename=os.path.join(folder_path,'motion.log'), level=logging.INFO,
                     format='%(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-# class DetectMotion(picamera.array.PiMotionAnalysis):
-#     def __init__(self, camera):
-#         super(DetectMotion, self).__init__(camera)
-#         self.motion_detected = False
-#         self.last_detection = time.time()
-#         self.last_logged = time.time()  # Add this line
-
-#     def analyse(self, a):
-#         a = np.sqrt(
-#             np.square(a['x'].astype(float)) +
-#             np.square(a['y'].astype(float))
-#         ).clip(0, 255).astype(np.uint8)
-
-#         if (a > motion_vectors_norm).sum() > motion_density:
-#             self.motion_detected = True
-#             self.last_detection = time.time()
-            
-#             # Only log if at least 1 second has passed since the last log
-#             if self.last_detection - self.last_logged >= motion_min_log_time:
-#                 logging.info('Motion detected')  # Log the detection
-#                 print('Motion detected')
-#                 self.last_logged = self.last_detection  # Update the last logged time
-
 class DetectMotion(picamera.array.PiMotionAnalysis):
     def __init__(self, camera):
         super(DetectMotion, self).__init__(camera)
         self.motion_detected = False
         self.last_detection = time.time()
-        self.last_logged = time.time()
-        self.prev_frame = None  # Store the previous frame
+        self.last_logged = time.time()  # Add this line
 
     def analyse(self, a):
-        # Convert motion data to an image
         a = np.sqrt(
             np.square(a['x'].astype(float)) +
             np.square(a['y'].astype(float))
         ).clip(0, 255).astype(np.uint8)
-        
-        # Convert to a PIL Image
-        img = Image.fromarray(a)
-        
-        # Convert the image to grayscale
-        gray_img = img.convert('L')
-        
-        # Convert back to a numpy array
-        frame = np.array(gray_img)
 
-        # If this is the first frame, save it and return
-        if self.prev_frame is None:
-            self.prev_frame = frame
-            return
-        
-        # Compute absolute difference between current frame and the previous frame
-        frame_diff = np.abs(frame.astype(int) - self.prev_frame.astype(int))
-        
-        # Update the previous frame
-        self.prev_frame = frame
-        
-        # Threshold the difference (you may need to adjust the threshold value)
-        threshold_value = 130
-        frame_diff = (frame_diff > threshold_value).astype(np.uint8)
-        
-        # Sum the black pixels (value=0)
-        black_pixel_count = np.sum(frame_diff == 0)
-
-        # Set motion detected flag based on black pixel count threshold
-        black_pixel_threshold = 5000  # Adjust this threshold value as needed
-        if black_pixel_count > black_pixel_threshold:
+        if (a > motion_vectors_norm).sum() > motion_density:
             self.motion_detected = True
             self.last_detection = time.time()
             
             # Only log if at least 1 second has passed since the last log
-            if self.last_detection - self.last_logged >= 1:
+            if self.last_detection - self.last_logged >= motion_min_log_time:
+                logging.info('Motion detected')  # Log the detection
                 print('Motion detected')
-                self.last_logged = self.last_detection
+                self.last_logged = self.last_detection  # Update the last logged time
+
+# class DetectMotion(picamera.array.PiMotionAnalysis):
+#     def __init__(self, camera):
+#         super(DetectMotion, self).__init__(camera)
+#         self.motion_detected = False
+#         self.last_detection = time.time()
+#         self.last_logged = time.time()
+#         self.prev_frame = None  # Store the previous frame
+
+#     def analyse(self, a):
+#         # Convert motion data to an image
+#         a = np.sqrt(
+#             np.square(a['x'].astype(float)) +
+#             np.square(a['y'].astype(float))
+#         ).clip(0, 255).astype(np.uint8)
+        
+#         # Convert to a PIL Image
+#         img = Image.fromarray(a)
+        
+#         # Convert the image to grayscale
+#         gray_img = img.convert('L')
+        
+#         # Convert back to a numpy array
+#         frame = np.array(gray_img)
+
+#         # If this is the first frame, save it and return
+#         if self.prev_frame is None:
+#             self.prev_frame = frame
+#             return
+        
+#         # Compute absolute difference between current frame and the previous frame
+#         frame_diff = np.abs(frame.astype(int) - self.prev_frame.astype(int))
+        
+#         # Update the previous frame
+#         self.prev_frame = frame
+        
+#         # Threshold the difference (you may need to adjust the threshold value)
+#         threshold_value = 130
+#         frame_diff = (frame_diff > threshold_value).astype(np.uint8)
+        
+#         # Sum the black pixels (value=0)
+#         black_pixel_count = np.sum(frame_diff == 0)
+
+#         # Set motion detected flag based on black pixel count threshold
+#         black_pixel_threshold = 5000  # Adjust this threshold value as needed
+#         if black_pixel_count > black_pixel_threshold:
+#             self.motion_detected = True
+#             self.last_detection = time.time()
+            
+#             # Only log if at least 1 second has passed since the last log
+#             if self.last_detection - self.last_logged >= 1:
+#                 print('Motion detected')
+#                 self.last_logged = self.last_detection
 
 # -----------------------------------------------------------------------------------------------
 
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
-# print('starting: ')
-# target_datetime = datetime.datetime(year=2023, month=10, day=8, hour=10, minute=30, second=30)
-# print(target_datetime)
-# print(datetime.datetime.now())
-# while datetime.datetime.now() < target_datetime:
-#     time.sleep(1)
-# print('done')
+
+print('starting: ')
+target_datetime = datetime.datetime(year=2023, month=10, day=7, hour=10, minute=30, second=30)
+print(target_datetime)
+print(datetime.datetime.now())
+while datetime.datetime.now() < target_datetime:
+    time.sleep(1)
+print('done')
 
 print("Initializing Camera...")
 camera = picamera.PiCamera()
