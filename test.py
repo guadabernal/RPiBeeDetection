@@ -7,7 +7,7 @@ import logging
 import shutil
 import os
 
-total_disk, used_disk, free_disk = shutil.disk_usage('home/pi/videos') # returns total, use, and free
+total_disk, used_disk, free_disk = shutil.disk_usage('/home/pi/videos') # returns total, use, and free
 print(total_disk)
 print(used_disk)
 print(free_disk)
