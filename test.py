@@ -75,8 +75,8 @@ if not os.path.exists(folder_path):
 
 print("Initializing Camera...")
 camera = picamera.PiCamera()
-camera.resolution = (camera_cols, camera_rows)
-camera.framerate = framerate
+# camera.resolution = (camera_cols, camera_rows)
+# camera.framerate = framerate
 
 print("Camera Initialized")
 
