@@ -58,6 +58,7 @@ class DetectMotion(picamera.array.PiMotionAnalysis):
             # Only log if at least 1 second has passed since the last log
             if self.last_detection - self.last_logged >= motion_min_log_time:
                 logging.info('Motion detected')  # Log the detection
+                print('Motion detected')
                 self.last_logged = self.last_detection  # Update the last logged time
 
 # -----------------------------------------------------------------------------------------------
