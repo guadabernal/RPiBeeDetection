@@ -10,7 +10,7 @@ import logging
 import shutil
 import os
 
-import PIL from Image
+from PIL import Image
 
 
 # -----------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ class DetectMotion(PiMotionAnalysis):
         
         # Sum the black pixels (value=0)
         black_pixel_count = np.sum(frame_diff == 0)
-        
+
         # Set motion detected flag based on black pixel count threshold
         black_pixel_threshold = 1000  # Adjust this threshold value as needed
         if black_pixel_count > black_pixel_threshold:
