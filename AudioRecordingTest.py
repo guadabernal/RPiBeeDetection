@@ -13,16 +13,15 @@ numdevices = info.get('deviceCount')
 print("")
 for i in range(0, numdevices):
   if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
-    print("Input Device id ", i, " - ", p.get_device_info_by_host_api_device_index(0, i).get('name'))
+    name = p.get_device_info_by_host_api_device_index(0, i).get('name')
+    print("Input Device id ", i, " - ", name)
+  if (name == "ac108"):
+    print(i)
   
-exit()
-
-RESPEAKER_INDEX = 1  # refer to input device id
+RESPEAKER_INDEX = 10  # refer to input device id
 CHUNK = 1024
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output.wav"
-
-p = pyaudio.PyAudio()
 
 stream = p.open(
             rate=RESPEAKER_RATE,
