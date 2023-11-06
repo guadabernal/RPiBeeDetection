@@ -22,7 +22,7 @@ for i in range(0, numdevices):
   
 CHUNK = 1024
 RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "right.wav"
+WAVE_OUTPUT_FILENAME = "four_tl_tr_bl_br.wav"
 
 stream = p.open(
             rate=RESPEAKER_RATE,
