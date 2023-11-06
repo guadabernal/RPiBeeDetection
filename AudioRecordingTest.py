@@ -22,7 +22,7 @@ for i in range(0, numdevices):
   
 CHUNK = 1024
 RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "output.wav"
+WAVE_OUTPUT_FILENAME = "above.wav"
 
 stream = p.open(
             rate=RESPEAKER_RATE,
@@ -36,8 +36,8 @@ print("--- Starting recording ---")
 frames = []
 
 for i in range(0, int(RESPEAKER_RATE / CHUNK * RECORD_SECONDS)):
-    data = stream.read(CHUNK)
-    frames.append(data)
+  data = stream.read(CHUNK)
+  frames.append(data)
 
 print("--- Done recording ---")
 
