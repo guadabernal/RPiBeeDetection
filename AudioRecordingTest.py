@@ -9,6 +9,7 @@ p = pyaudio.PyAudio()
 info = p.get_host_api_info_by_index(0)
 numdevices = info.get('deviceCount')
 
+RESPEAKER_INDEX = 0  # refer to input device id
 # run getDeviceInfo.py to get index
 print("")
 for i in range(0, numdevices):
@@ -16,9 +17,9 @@ for i in range(0, numdevices):
     name = p.get_device_info_by_host_api_device_index(0, i).get('name')
     print("Input Device id ", i, " - ", name)
     if (name == "ac108"):
-      print(i)
+      RESPEAKER_INDEX = i
+      print("  RESPEAKER_INDEX = ", i)
   
-RESPEAKER_INDEX = 10  # refer to input device id
 CHUNK = 1024
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output.wav"
@@ -30,7 +31,7 @@ stream = p.open(
             input=True,
             input_device_index=RESPEAKER_INDEX,)
 
-print("* recording")
+print("--- Starting recording ---")
 
 frames = []
 
@@ -38,7 +39,7 @@ for i in range(0, int(RESPEAKER_RATE / CHUNK * RECORD_SECONDS)):
     data = stream.read(CHUNK)
     frames.append(data)
 
-print("* done recording")
+print("--- Done recording ---")
 
 stream.stop_stream()
 stream.close()
