@@ -21,7 +21,7 @@ for i in range(0, numdevices):
       print("  RESPEAKER_INDEX = ", i)
   
 CHUNK = 1024
-RECORD_SECONDS = 5
+RECORD_SECONDS = 120
 WAVE_OUTPUT_FILENAME = "test_1_120_sec.wav"
 
 stream = p.open(
